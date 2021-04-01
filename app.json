@@ -1,0 +1,12 @@
+{
+  "name": "n3rgyMobile",
+  "displayName": "n3rgyMobile",
+  "expo": {
+    "name": "n3rgyMobile",
+    "slug": "n3rgyMobile",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
