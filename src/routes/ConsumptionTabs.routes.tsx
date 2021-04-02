@@ -4,6 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { Ionicons } from '@expo/vector-icons';
 
+import { Electricity } from '../pages/Electricity';
+import { Gas } from '../pages/Gas';
+
 const { Navigator, Screen } = createBottomTabNavigator();
 
 interface tabBarProps {
@@ -43,7 +46,7 @@ export function ConsumptionTabs(): JSX.Element {
     >
       <Screen
         name="Electricity"
-        component={}
+        component={Electricity}
         options={{
           tabBarLabel: 'Electricity',
           tabBarIcon: ({ color, size, focused }: tabBarProps) => {
@@ -60,7 +63,7 @@ export function ConsumptionTabs(): JSX.Element {
 
       <Screen
         name="Gas"
-        component={}
+        component={Gas}
         options={{
           tabBarLabel: 'Gas',
 
