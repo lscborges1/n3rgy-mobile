@@ -21,7 +21,7 @@ export function Landing(): JSX.Element {
   const [IHDMACInput, setIHDMACInput] = useState('');
 
   function handleSignInButton() {
-    // navigate('ConsumptionTabs');
+    navigate('ConsumptionTabs');
   }
 
   return (
@@ -45,7 +45,7 @@ export function Landing(): JSX.Element {
             />
           </TextInputContainer>
 
-          <LandingButton>
+          <LandingButton onPress={handleSignInButton}>
             <ButtonText>SIGN IN</ButtonText>
             <Ionicons name="log-in-outline" size={25} />
           </LandingButton>

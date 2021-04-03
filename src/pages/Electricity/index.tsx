@@ -1,6 +1,17 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ConsumptionGraphs } from '../../components/ConsumptionGraphs';
+import { Header } from '../../components/Header';
+import { GraphSelector } from '../../components/GraphSelector';
+import { Container } from './styles';
 
 export function Electricity(): JSX.Element {
-  return <View />;
+  return (
+    <>
+      <Header />
+      <Container>
+        <GraphSelector />
+        <ConsumptionGraphs />
+      </Container>
+    </>
+  );
 }
