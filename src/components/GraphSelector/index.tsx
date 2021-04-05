@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Container, ButtonContainer, GraphSelectorText } from './styles';
 
-export function GraphSelector(): JSX.Element {
-  const [selectedGraph, setSelectedGraph] = useState('Day');
+interface GraphSelectorProps {
+  selectedGraph: string;
+  handleGraphSelection(graph: string): void;
+}
 
-  function handleGraphSelection(graph: string) {
-    setSelectedGraph(graph);
-  }
-
+export function GraphSelector({
+  handleGraphSelection,
+  selectedGraph,
+}: GraphSelectorProps): JSX.Element {
   return (
     <Container>
       <ButtonContainer onPress={() => handleGraphSelection('Day')}>
