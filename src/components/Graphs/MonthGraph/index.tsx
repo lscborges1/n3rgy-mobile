@@ -23,7 +23,7 @@ export function MonthGraph({
           colors={['#dfe5ec', '#90a5bb', '#617e9e', '#3a4c5f', '#212b36']}
           numberOfLines={7}
           maximumValue="10"
-          blocksSize={35}
+          blocksSize={34}
           colorsPercentage={[0, 0.000001, 41, 60, 80]}
           values={[
             1,

@@ -9,6 +9,7 @@ export const Container = styled.View`
 export const HeatMapContainer = styled.View`
   width: 70%;
   transform: rotate(90deg) rotateY(180deg);
+  align-self: center;
 `;
 
 export const SubtitleContainer = styled.View`

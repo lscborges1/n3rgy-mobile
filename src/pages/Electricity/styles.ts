@@ -4,7 +4,6 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   position: relative;
   flex: 1;
-  height: 100%;
   background-color: #fff;
   margin-top: -15px;
   border-top-right-radius: 20px;

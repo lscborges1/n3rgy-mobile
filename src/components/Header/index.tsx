@@ -5,15 +5,15 @@ import { Container, SettingButton } from './styles';
 import logoImg from '../../assets/logo/Logo.png';
 
 interface HeaderProps {
-  handleMenuButton: () => void;
+  settingsButton: () => void;
 }
 
-export function Header({ handleMenuButton }: HeaderProps): JSX.Element {
+export function Header({ settingsButton }: HeaderProps): JSX.Element {
   return (
     <Container>
       <SettingButton
         onPress={() => {
-          handleMenuButton();
+          settingsButton();
         }}
       >
         <Ionicons name="options-outline" size={40} color="#ebab21" />

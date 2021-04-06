@@ -7,26 +7,35 @@ import { ConsumptionCards } from '../../components/ConsumptionCards';
 import { WeekGraph } from '../../components/Graphs/WeekGraph';
 import { MonthGraph } from '../../components/Graphs/MonthGraph';
 import { DaySelector } from '../../components/DaySelector';
+import { SettingsModal } from '../../components/SettingsModal';
 
 export function Electricity(): JSX.Element {
   const [isCacheLoading, setIsCacheLoading] = useState(false);
-  const [selectedGraph, setSelectedGraph] = useState('Month');
+  const [settingsModal, setSettingsModal] = useState(false);
+  const [selectedGraph, setSelectedGraph] = useState('Day');
 
   function handleGraphSelection(graph: string) {
     setSelectedGraph(graph);
   }
 
-  function handleMenuButton() {
-    setSelectedGraph('Week');
+  function handleOpenSettings() {
+    setSettingsModal(true);
+  }
+
+  function handleCloseSettings() {
+    setSettingsModal(false);
   }
 
   return (
     <>
-      <Header handleMenuButton={handleMenuButton} />
-
+      <SettingsModal
+        isVisible={settingsModal}
+        closeSettings={handleCloseSettings}
+      />
+      <Header settingsButton={handleOpenSettings} />
       <Container>
         <GraphSelector
-          handleGraphSelection={handleGraphSelection}
+          graphSelection={handleGraphSelection}
           selectedGraph={selectedGraph}
         />
         <DaySelector />

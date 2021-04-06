@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Container, ButtonContainer, GraphSelectorText } from './styles';
 
 interface GraphSelectorProps {
   selectedGraph: string;
-  handleGraphSelection(graph: string): void;
+  graphSelection(graph: string): void;
 }
 
 export function GraphSelector({
-  handleGraphSelection,
+  graphSelection,
   selectedGraph,
 }: GraphSelectorProps): JSX.Element {
   return (
@@ -16,7 +16,7 @@ export function GraphSelector({
       <TouchableOpacity
         style={{ flex: 1 }}
         onPress={() => {
-          handleGraphSelection('Day');
+          graphSelection('Day');
         }}
       >
         <ButtonContainer>
@@ -35,7 +35,7 @@ export function GraphSelector({
       <TouchableOpacity
         style={{ flex: 1 }}
         onPress={() => {
-          handleGraphSelection('Week');
+          graphSelection('Week');
         }}
       >
         <ButtonContainer>
@@ -54,7 +54,7 @@ export function GraphSelector({
       <TouchableOpacity
         style={{ flex: 1 }}
         onPress={() => {
-          handleGraphSelection('Month');
+          graphSelection('Month');
         }}
       >
         <ButtonContainer>
