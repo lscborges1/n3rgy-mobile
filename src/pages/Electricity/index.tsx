@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Header } from '../../components/Header';
 import { GraphSelector } from '../../components/GraphSelector';
 import { DayGraph } from '../../components/Graphs/DayGraph';
-// import { WeekGraph } from '../../components/Graphs/WeekGraph';
-// import { MonthGraph } from '../../components/Graphs/MonthGraph';
 import { Container, Loading } from './styles';
 import { ConsumptionCards } from '../../components/ConsumptionCards';
 import { WeekGraph } from '../../components/Graphs/WeekGraph';
@@ -12,23 +10,29 @@ import { DaySelector } from '../../components/DaySelector';
 
 export function Electricity(): JSX.Element {
   const [isCacheLoading, setIsCacheLoading] = useState(false);
-  const [selectedGraph, setSelectedGraph] = useState('Day');
+  const [selectedGraph, setSelectedGraph] = useState('Month');
 
   function handleGraphSelection(graph: string) {
     setSelectedGraph(graph);
   }
 
+  function handleMenuButton() {
+    setSelectedGraph('Week');
+  }
+
   return (
     <>
-      <Header />
+      <Header handleMenuButton={handleMenuButton} />
+
       <Container>
         <GraphSelector
           handleGraphSelection={handleGraphSelection}
           selectedGraph={selectedGraph}
         />
         <DaySelector />
-
-        <Loading size="large" color="#ebab21" animating={isCacheLoading} />
+        {isCacheLoading && (
+          <Loading size="large" color="#ebab21" animating={isCacheLoading} />
+        )}
 
         {selectedGraph === 'Day' && !isCacheLoading && (
           <DayGraph typeOfConsumption="electricity" />
@@ -45,7 +49,7 @@ export function Electricity(): JSX.Element {
           <ConsumptionCards
             typeOfConsumption="electricity"
             consumptionUnit="kWh"
-            selectedGraph="Day"
+            selectedGraph={selectedGraph}
             totalConsumption="150"
             percentConsumption="20%"
           />

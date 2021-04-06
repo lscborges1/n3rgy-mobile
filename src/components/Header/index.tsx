@@ -1,17 +1,27 @@
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Container } from './styles';
+import { Container, SettingButton } from './styles';
 import logoImg from '../../assets/logo/Logo.png';
 
-export function Header(): JSX.Element {
+interface HeaderProps {
+  handleMenuButton: () => void;
+}
+
+export function Header({ handleMenuButton }: HeaderProps): JSX.Element {
   return (
     <Container>
-      <TouchableOpacity style={{ position: 'absolute', top: 30, left: 10 }}>
+      <SettingButton
+        onPress={() => {
+          handleMenuButton();
+        }}
+      >
         <Ionicons name="options-outline" size={40} color="#ebab21" />
-      </TouchableOpacity>
+      </SettingButton>
 
-      <Image style={{ top: 40 }} source={logoImg} />
+      <Image source={logoImg} />
+
+      <View />
     </Container>
   );
 }
