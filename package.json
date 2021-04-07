@@ -15,6 +15,8 @@
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
     "@typescript-eslint/eslint-plugin": "^4.20.0",
+    "axios": "^0.21.1",
+    "date-fns": "^2.19.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-react": "^7.21.5",
     "expo": "~40.0.0",
