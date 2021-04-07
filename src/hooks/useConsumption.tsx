@@ -9,20 +9,20 @@ import React, {
 
 import { api } from '../services/api';
 
-interface ElectricityProviderProps {
+interface ConsumptionProviderProps {
   children: ReactNode;
 }
-interface ElectricityContextData {
+interface ConsumptionContextData {
   selectedDay: Date;
   handleNextDay: () => void;
   handleLastDay: () => void;
 }
 
-const ElectricityContext = createContext({} as ElectricityContextData);
+const ConsumptionContext = createContext({} as ConsumptionContextData);
 
-export function ElectricityProvider({
+export function ConsumptionProvider({
   children,
-}: ElectricityProviderProps): JSX.Element {
+}: ConsumptionProviderProps): JSX.Element {
   const [selectedDay, setSelectedDay] = useState(new Date());
 
   function handleNextDay() {
@@ -36,16 +36,26 @@ export function ElectricityProvider({
     setSelectedDay(currentDay => subDays(currentDay, 1));
   }
 
+  useEffect(() => {
+    async function getConsumption() {
+      const { data: GasConsumption } = await api.get('gas/consumption/1');
+      const { data: ElectricityConsumption } = await api.get(
+        'electricity/consumption/1',
+      );
+    }
+    getConsumption();
+  }, []);
+
   return (
-    <ElectricityContext.Provider
+    <ConsumptionContext.Provider
       value={{ selectedDay, handleNextDay, handleLastDay }}
     >
       {children}
-    </ElectricityContext.Provider>
+    </ConsumptionContext.Provider>
   );
 }
 
-export function useConsumption(): ElectricityContextData {
-  const context = useContext(ElectricityContext);
+export function useConsumption(): ConsumptionContextData {
+  const context = useContext(ConsumptionContext);
   return context;
 }
