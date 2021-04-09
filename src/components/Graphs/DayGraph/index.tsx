@@ -5,7 +5,6 @@ import {
 } from '@connectedcars/react-native-slide-charts';
 import { LinearGradient, Stop } from 'react-native-svg';
 import { Container } from './styles';
-import { useConsumption } from '../../../hooks/useConsumption';
 
 const AreaChartFillGradient = (props: GradientProps) => {
   return (
@@ -18,13 +17,17 @@ const AreaChartFillGradient = (props: GradientProps) => {
 
 interface DayGraphProps {
   typeOfConsumption: 'electricity' | 'gas';
+  data: Map<K, V>;
 }
 interface consuptionData {
   timestamp: string;
   value: number;
 }
 
-export function DayGraph({ typeOfConsumption }: DayGraphProps): JSX.Element {
+export function DayGraph({
+  typeOfConsumption,
+  data,
+}: DayGraphProps): JSX.Element {
   let consumptionUnit = '';
   switch (typeOfConsumption) {
     case 'electricity':
@@ -37,32 +40,7 @@ export function DayGraph({ typeOfConsumption }: DayGraphProps): JSX.Element {
       consumptionUnit = 'help-circle-outline';
   }
 
-  const { electricityConsumption } = useConsumption();
-  console.log(electricityConsumption.get('2020-04-11'));
-
-  // const [graphData, setGraphData] = useState([]);
-
-  // const filterDayGraphData = useCallback(
-  //   (day: Date) => {
-  //     const newConsumptionData = data.get(format(day, 'yyyy-MM-dd'));
-  //     const formatedDataNewData = newConsumptionData.map(() => {
-  //       return {
-  //         y: data.value,
-  //         x: new Date(data.timestamp.replace(/-/g, '/')),
-  //       };
-  //     });
-
-  //     return formatedDataNewData;
-  //   },
-  //   [data],
-  // );
-
-  // useEffect(() => {
-  //   const consumptionData = filterDayGraphData(selectedDay);
-  //   setGraphData(consumptionData);
-  // }, [selectedDay, filterDayGraphData]);
-
-  const data = [
+  const data2 = [
     {
       value: 0.095,
       timestamp: '2021-04-04 00:30',
@@ -256,7 +234,7 @@ export function DayGraph({ typeOfConsumption }: DayGraphProps): JSX.Element {
       timestamp: '2021-04-05 00:00',
     },
   ];
-  const graphData = data.map((consumption: consuptionData) => {
+  const graphData = data2.map((consumption: consuptionData) => {
     return {
       y: consumption.value,
       x: new Date(consumption.timestamp.replace(/-/g, '/')),

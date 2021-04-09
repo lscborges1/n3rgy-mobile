@@ -2,11 +2,11 @@ import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { format } from 'date-fns';
-import { useConsumption } from '../../hooks/useConsumption';
 import { Container, DateText } from './styles';
+import { useSelectedDay } from '../../hooks/useSelectedDay';
 
 export function DaySelector(): JSX.Element {
-  const { selectedDay, handleLastDay, handleNextDay } = useConsumption();
+  const { selectedDay, handleLastDay, handleNextDay } = useSelectedDay();
 
   return (
     <Container>

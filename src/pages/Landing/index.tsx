@@ -24,10 +24,8 @@ import logoImg from '../../assets/logo/Logo.png';
 import landingBackground from '../../assets/landingBackGround/landingBackground.png';
 import { useAuth } from '../../hooks/useAuth';
 import { api } from '../../services/api';
-import { useConsumption } from '../../hooks/useConsumption';
 
 export function Landing(): JSX.Element {
-  const { getConsumptionData } = useConsumption();
   const { navigate } = useNavigation();
   const { login, IHDMAC } = useAuth();
 
@@ -39,7 +37,6 @@ export function Landing(): JSX.Element {
       setLoginLoading(true);
       api.defaults.headers.common.Authorization = IHDMACInput;
       await api.get('');
-      await getConsumptionData;
     } catch (e) {
       setLoginLoading(false);
       Alert.alert(

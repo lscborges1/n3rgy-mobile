@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable no-await-in-loop */
+import React, { useEffect, useState } from 'react';
 import { Header } from '../../components/Header';
 import { GraphSelector } from '../../components/GraphSelector';
 import { DayGraph } from '../../components/Graphs/DayGraph';
@@ -8,13 +9,50 @@ import { WeekGraph } from '../../components/Graphs/WeekGraph';
 import { MonthGraph } from '../../components/Graphs/MonthGraph';
 import { DaySelector } from '../../components/DaySelector';
 import { SettingsModal } from '../../components/SettingsModal';
-import { useConsumption } from '../../hooks/useConsumption';
+import { api } from '../../services/api';
+import groupBy from '../../utils/groupBy';
 
 export function Electricity(): JSX.Element {
-  const { electricityConsumption, selectedDay } = useConsumption();
   const [isCacheLoading, setIsCacheLoading] = useState(false);
   const [settingsModal, setSettingsModal] = useState(false);
   const [selectedGraph, setSelectedGraph] = useState('Day');
+  const [consumptionData, setConsumptionData] = useState(new Map());
+
+  useEffect(() => {
+    async function getElectricityConsumption() {
+      setIsCacheLoading(true);
+      const { data: ElectricityConsumption } = await api.get(
+        'electricity/consumption/1',
+      );
+      const {
+        start: cacheStart,
+        end: cacheEnd,
+      } = ElectricityConsumption.availableCacheRange;
+
+      let requestStartDate = cacheStart;
+
+      let cacheData = [];
+
+      while (requestStartDate !== cacheEnd) {
+        const resp = await api.get('/electricity/consumption/1', {
+          params: {
+            start: requestStartDate,
+            end: cacheEnd,
+          },
+        });
+
+        cacheData = cacheData.concat(resp.data.values);
+        requestStartDate = resp.data.end;
+      }
+
+      const groupedConsumption = groupBy(cacheData, data =>
+        data.timestamp.slice(0, 10),
+      );
+      setConsumptionData(groupedConsumption);
+      setIsCacheLoading(false);
+    }
+    getElectricityConsumption();
+  }, []);
 
   function handleGraphSelection(graph: string) {
     setSelectedGraph(graph);
@@ -46,11 +84,7 @@ export function Electricity(): JSX.Element {
         )}
 
         {selectedGraph === 'Day' && !isCacheLoading && (
-          <DayGraph
-            data={electricityConsumption}
-            selectedDay={selectedDay}
-            typeOfConsumption="electricity"
-          />
+          <DayGraph data={consumptionData} typeOfConsumption="electricity" />
         )}
 
         {selectedGraph === 'Week' && !isCacheLoading && (
