@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
+import { Text } from 'react-native';
 import { Card, CardContainer, CardText, UnitText } from './styles';
 
 interface ConsumptionCardsProps {
@@ -69,8 +70,8 @@ export function ConsumptionCards({
             }}
           />
         )}
-        <CardText style={{ marginBottom: 10 }}>{percentConsumption}</CardText>
-        <CardText style={{ fontSize: 15 }}>{`Last ${selectedGraph}`}</CardText>
+        <CardText>{percentConsumption}</CardText>
+        <UnitText>{`Last ${selectedGraph}`}</UnitText>
       </Card>
     </CardContainer>
   );

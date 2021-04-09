@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   Image,
@@ -24,10 +24,12 @@ import logoImg from '../../assets/logo/Logo.png';
 import landingBackground from '../../assets/landingBackGround/landingBackground.png';
 import { useAuth } from '../../hooks/useAuth';
 import { api } from '../../services/api';
+import { useConsumption } from '../../hooks/useConsumption';
 
 export function Landing(): JSX.Element {
+  const { getConsumptionData } = useConsumption();
   const { navigate } = useNavigation();
-  const { login } = useAuth();
+  const { login, IHDMAC } = useAuth();
 
   const [loginLoading, setLoginLoading] = useState(false);
   const [IHDMACInput, setIHDMACInput] = useState('0CA2F4000025F4D4');
@@ -35,14 +37,11 @@ export function Landing(): JSX.Element {
   async function handleSignInButton() {
     try {
       setLoginLoading(true);
-      await api.get('', {
-        headers: {
-          Authorization: IHDMACInput,
-        },
-      });
-    } catch {
+      api.defaults.headers.common.Authorization = IHDMACInput;
+      await api.get('');
+      await getConsumptionData;
+    } catch (e) {
       setLoginLoading(false);
-
       Alert.alert(
         'Sign in Error',
         'An error occured while signing in, check your credentials.',
@@ -53,6 +52,12 @@ export function Landing(): JSX.Element {
     login(IHDMACInput);
     navigate('ConsumptionTabs');
   }
+
+  useEffect(() => {
+    if (IHDMAC) {
+      navigate('ConsumptionTabs');
+    }
+  }, [navigate, IHDMAC]);
 
   return (
     <Container>
@@ -67,18 +72,14 @@ export function Landing(): JSX.Element {
           </ImageContainer>
 
           <Modal transparent visible={loginLoading}>
-            <LandingBackground
-              style={{ flex: 1 }}
-              source={landingBackground}
-              blurRadius={5}
-            >
+            <View style={{ flex: 1 }}>
               <ActivityIndicator
                 size="large"
                 color="#ebab21"
                 animating={loginLoading}
                 style={{ flex: 1 }}
               />
-            </LandingBackground>
+            </View>
           </Modal>
 
           <TextInputContainer>
@@ -90,7 +91,7 @@ export function Landing(): JSX.Element {
             />
           </TextInputContainer>
 
-          <LandingButton onPress={handleSignInButton}>
+          <LandingButton onPress={() => handleSignInButton()}>
             <ButtonText>SIGN IN</ButtonText>
             <Ionicons name="log-in-outline" size={25} />
           </LandingButton>

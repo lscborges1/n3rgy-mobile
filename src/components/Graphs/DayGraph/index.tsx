@@ -5,6 +5,7 @@ import {
 } from '@connectedcars/react-native-slide-charts';
 import { LinearGradient, Stop } from 'react-native-svg';
 import { Container } from './styles';
+import { useConsumption } from '../../../hooks/useConsumption';
 
 const AreaChartFillGradient = (props: GradientProps) => {
   return (
@@ -35,6 +36,31 @@ export function DayGraph({ typeOfConsumption }: DayGraphProps): JSX.Element {
     default:
       consumptionUnit = 'help-circle-outline';
   }
+
+  const { electricityConsumption } = useConsumption();
+  console.log(electricityConsumption.get('2020-04-11'));
+
+  // const [graphData, setGraphData] = useState([]);
+
+  // const filterDayGraphData = useCallback(
+  //   (day: Date) => {
+  //     const newConsumptionData = data.get(format(day, 'yyyy-MM-dd'));
+  //     const formatedDataNewData = newConsumptionData.map(() => {
+  //       return {
+  //         y: data.value,
+  //         x: new Date(data.timestamp.replace(/-/g, '/')),
+  //       };
+  //     });
+
+  //     return formatedDataNewData;
+  //   },
+  //   [data],
+  // );
+
+  // useEffect(() => {
+  //   const consumptionData = filterDayGraphData(selectedDay);
+  //   setGraphData(consumptionData);
+  // }, [selectedDay, filterDayGraphData]);
 
   const data = [
     {

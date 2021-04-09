@@ -6,46 +6,48 @@ import React, {
   useState,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from '../services/api';
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 interface AuthContextData {
-  IDHMAC: string;
-  login: (IDHMAC: string) => Promise<void>;
+  IHDMAC: string;
+  login: (IHDMAC: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
 const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
-  const [IDHMAC, setIDHMAC] = useState('');
+  const [IHDMAC, setIDHMAC] = useState('');
 
   useEffect(() => {
     async function loadStorageData(): Promise<void> {
-      const IHDMAC = await AsyncStorage.getItem('@n3rgyMobile:IHDMAC');
+      const cachedIHDMAC = await AsyncStorage.getItem('@n3rgyMobile:IHDMAC');
 
-      if (IHDMAC) {
-        setIDHMAC(JSON.parse(IHDMAC));
+      if (cachedIHDMAC) {
+        api.defaults.headers.common.Authorization = JSON.parse(cachedIHDMAC);
+        setIDHMAC(JSON.parse(cachedIHDMAC));
       }
     }
 
     loadStorageData();
   }, []);
 
-  async function login(IHDMAC: string): Promise<void> {
-    setIDHMAC(IHDMAC);
+  async function login(inputIHDMAC: string): Promise<void> {
+    setIDHMAC(inputIHDMAC);
     await AsyncStorage.setItem('@n3rgyMobile:IHDMAC', JSON.stringify(IHDMAC));
   }
 
   async function logout() {
-    await AsyncStorage.removeItem('@n3rgyMobile:IHDMAC');
     setIDHMAC('');
+    await AsyncStorage.removeItem('@n3rgyMobile:IHDMAC');
   }
 
   return (
-    <AuthContext.Provider value={{ IDHMAC, login, logout }}>
+    <AuthContext.Provider value={{ IHDMAC, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

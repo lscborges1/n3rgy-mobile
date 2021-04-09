@@ -8,8 +8,10 @@ import { WeekGraph } from '../../components/Graphs/WeekGraph';
 import { MonthGraph } from '../../components/Graphs/MonthGraph';
 import { DaySelector } from '../../components/DaySelector';
 import { SettingsModal } from '../../components/SettingsModal';
+import { useConsumption } from '../../hooks/useConsumption';
 
 export function Electricity(): JSX.Element {
+  const { electricityConsumption, selectedDay } = useConsumption();
   const [isCacheLoading, setIsCacheLoading] = useState(false);
   const [settingsModal, setSettingsModal] = useState(false);
   const [selectedGraph, setSelectedGraph] = useState('Day');
@@ -44,7 +46,11 @@ export function Electricity(): JSX.Element {
         )}
 
         {selectedGraph === 'Day' && !isCacheLoading && (
-          <DayGraph typeOfConsumption="electricity" />
+          <DayGraph
+            data={electricityConsumption}
+            selectedDay={selectedDay}
+            typeOfConsumption="electricity"
+          />
         )}
 
         {selectedGraph === 'Week' && !isCacheLoading && (

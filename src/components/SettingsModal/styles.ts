@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 import { Platform } from 'react-native';
 
 export const ModalView = styled.View`
@@ -15,7 +14,7 @@ export const ModalView = styled.View`
   padding: 0 30px ${Platform.OS === 'android' ? 60 : 40}px;
 `;
 
-export const SettingsModalButton = styled(RectButton)`
+export const SettingsModalButton = styled.TouchableOpacity`
   flex-direction: row;
   width: 100%;
   height: 60px;

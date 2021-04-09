@@ -51,7 +51,7 @@ export const LandingButton = styled(RectButton)`
 `;
 
 export const ButtonText = styled.Text`
-  /* font-family: 'Lato-Bold'; */
+  font-family: 'Lato-Regular';
   color: #232129;
   font-size: 14px;
 `;

@@ -22,6 +22,7 @@ export const Card = styled.View`
 export const CardText = styled.Text`
   font-family: 'Lato-Bold';
   font-size: 30px;
+  margin-bottom: 5px;
 `;
 
 export const UnitText = styled.Text`
