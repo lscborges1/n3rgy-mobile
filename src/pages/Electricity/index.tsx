@@ -13,14 +13,13 @@ import { api } from '../../services/api';
 import groupBy from '../../utils/groupBy';
 
 export function Electricity(): JSX.Element {
-  const [isCacheLoading, setIsCacheLoading] = useState(false);
+  const [isCacheLoading, setIsCacheLoading] = useState(true);
   const [settingsModal, setSettingsModal] = useState(false);
   const [selectedGraph, setSelectedGraph] = useState('Day');
   const [consumptionData, setConsumptionData] = useState(new Map());
 
   useEffect(() => {
     async function getElectricityConsumption() {
-      setIsCacheLoading(true);
       const { data: ElectricityConsumption } = await api.get(
         'electricity/consumption/1',
       );
@@ -84,7 +83,11 @@ export function Electricity(): JSX.Element {
         )}
 
         {selectedGraph === 'Day' && !isCacheLoading && (
-          <DayGraph data={consumptionData} typeOfConsumption="electricity" />
+          <DayGraph
+            loading={isCacheLoading}
+            data={consumptionData}
+            typeOfConsumption="electricity"
+          />
         )}
 
         {selectedGraph === 'Week' && !isCacheLoading && (
@@ -93,15 +96,6 @@ export function Electricity(): JSX.Element {
 
         {selectedGraph === 'Month' && !isCacheLoading && (
           <MonthGraph typeOfConsumption="electricity" />
-        )}
-        {!isCacheLoading && (
-          <ConsumptionCards
-            typeOfConsumption="electricity"
-            consumptionUnit="kWh"
-            selectedGraph={selectedGraph}
-            totalConsumption="150"
-            percentConsumption="20%"
-          />
         )}
       </Container>
     </>

@@ -1,5 +1,5 @@
 /* eslint-disable no-await-in-loop */
-import { addDays, subDays } from 'date-fns';
+import { addDays, isToday, subDays } from 'date-fns';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 interface SelectedDayProviderProps {
@@ -19,7 +19,7 @@ export function SelectedDayProvider({
   const [selectedDay, setSelectedDay] = useState(new Date());
 
   function handleNextDay() {
-    if (selectedDay === new Date()) {
+    if (isToday(selectedDay)) {
       return;
     }
     setSelectedDay(currentDay => addDays(currentDay, 1));
