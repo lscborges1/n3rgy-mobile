@@ -4,7 +4,7 @@ import {
   GradientProps,
 } from '@connectedcars/react-native-slide-charts';
 import { LinearGradient, Stop } from 'react-native-svg';
-import { format, isToday, startOfYesterday, subDays } from 'date-fns';
+import { format, isToday, subDays } from 'date-fns';
 import { Container } from './styles';
 import { useSelectedDay } from '../../../hooks/useSelectedDay';
 import { ConsumptionCards } from '../../ConsumptionCards';
@@ -21,7 +21,7 @@ const AreaChartFillGradient = (props: GradientProps) => {
 interface DayGraphProps {
   typeOfConsumption: 'electricity' | 'gas';
   loading: boolean;
-  data: Map<K, V>;
+  data: Map<string, [{ timestamp: string; value: number }]>;
 }
 interface consuptionData {
   timestamp: string;
@@ -44,8 +44,10 @@ export function DayGraph({
     default:
       consumptionUnit = 'help-circle-outline';
   }
-  const [dayConsumption, setDayConsumption] = useState([]);
-  const [totalDayConsumption, setTotalDayConsumption] = useState('');
+  const [dayConsumption, setDayConsumption] = useState([
+    { y: 0, x: new Date() },
+  ]);
+  const [totalDayConsumption, setTotalDayConsumption] = useState(0);
   const [percentConsumption, setPercentConsumption] = useState('');
 
   const { selectedDay } = useSelectedDay();
@@ -54,40 +56,47 @@ export function DayGraph({
     (day: Date) => {
       const todayConsumption = data.get(format(day, 'yyyy-MM-dd'));
 
-      const formatedDayConsumption = todayConsumption.map(
-        (consumption: consuptionData) => {
-          return {
-            y: consumption.value,
-            x: new Date(consumption.timestamp.replace(/-/g, '/')),
-          };
-        },
-      );
-
-      const newTotalDayConsumption: number = todayConsumption.reduce(
-        (acumulator, consumption: consuptionData) => {
-          return acumulator + consumption.value;
-        },
-        0,
-      );
-
-      if (isToday(selectedDay)) {
-        setPercentConsumption('N/A');
-      } else {
-        const yesterdayConsumption = data.get(
-          format(subDays(selectedDay, 1), 'yyyy-MM-dd'),
+      if (todayConsumption) {
+        const formatedDayConsumption = todayConsumption.map(
+          (consumption: consuptionData) => {
+            return {
+              y: consumption.value,
+              x: new Date(consumption.timestamp.replace(/-/g, '/')),
+            };
+          },
         );
-        const newTotalYesterdayConsumption: number = yesterdayConsumption.reduce(
+
+        const newTotalDayConsumption: number = todayConsumption.reduce(
           (acumulator, consumption: consuptionData) => {
             return acumulator + consumption.value;
           },
           0,
         );
-        const percentageChangeOnconsuption =
-          (newTotalDayConsumption / newTotalYesterdayConsumption - 1) * 100;
-        setPercentConsumption(`${percentageChangeOnconsuption.toFixed(2)} %`);
+
+        setTotalDayConsumption(newTotalDayConsumption);
+        setDayConsumption(formatedDayConsumption);
+
+        if (isToday(selectedDay)) {
+          setPercentConsumption('N/A');
+          return;
+        }
+
+        const yesterdayConsumption = data.get(
+          format(subDays(selectedDay, 1), 'yyyy-MM-dd'),
+        );
+        if (yesterdayConsumption) {
+          const newTotalYesterdayConsumption: number = yesterdayConsumption.reduce(
+            (acumulator, consumption: consuptionData) => {
+              return acumulator + consumption.value;
+            },
+            0,
+          );
+
+          const percentageChangeOnconsuption =
+            (newTotalDayConsumption / newTotalYesterdayConsumption - 1) * 100;
+          setPercentConsumption(`${percentageChangeOnconsuption.toFixed(2)} %`);
+        }
       }
-      setTotalDayConsumption(newTotalDayConsumption.toFixed(2));
-      setDayConsumption(formatedDayConsumption);
     },
     [data, selectedDay],
   );
@@ -138,7 +147,7 @@ export function DayGraph({
         typeOfConsumption={typeOfConsumption}
         consumptionUnit={consumptionUnit}
         selectedGraph="Day"
-        totalConsumption={totalDayConsumption}
+        totalConsumption={totalDayConsumption.toFixed(2)}
         percentConsumption={percentConsumption}
       />
     </Container>

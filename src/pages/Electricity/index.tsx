@@ -4,7 +4,6 @@ import { Header } from '../../components/Header';
 import { GraphSelector } from '../../components/GraphSelector';
 import { DayGraph } from '../../components/Graphs/DayGraph';
 import { Container, Loading } from './styles';
-import { ConsumptionCards } from '../../components/ConsumptionCards';
 import { WeekGraph } from '../../components/Graphs/WeekGraph';
 import { MonthGraph } from '../../components/Graphs/MonthGraph';
 import { DaySelector } from '../../components/DaySelector';
@@ -91,7 +90,11 @@ export function Electricity(): JSX.Element {
         )}
 
         {selectedGraph === 'Week' && !isCacheLoading && (
-          <WeekGraph typeOfConsumption="electricity" />
+          <WeekGraph
+            loading={isCacheLoading}
+            data={consumptionData}
+            typeOfConsumption="electricity"
+          />
         )}
 
         {selectedGraph === 'Month' && !isCacheLoading && (

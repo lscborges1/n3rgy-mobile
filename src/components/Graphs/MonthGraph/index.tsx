@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { ConsumptionCards } from '../../ConsumptionCards';
 import HeatMap from '../../HeatMap/index.js';
 import {
   Container,
@@ -16,6 +17,21 @@ interface MonthGraphProps {
 export function MonthGraph({
   typeOfConsumption,
 }: MonthGraphProps): JSX.Element {
+  let consumptionUnit = '';
+  switch (typeOfConsumption) {
+    case 'electricity':
+      consumptionUnit = 'kWh';
+      break;
+    case 'gas':
+      consumptionUnit = 'm³';
+      break;
+    default:
+      consumptionUnit = 'help-circle-outline';
+  }
+
+  const [totalMonthConsumption, setTotalDayConsumption] = useState('');
+  const [percentConsumption, setPercentConsumption] = useState('');
+
   return (
     <Container>
       <HeatMapContainer>
@@ -73,6 +89,14 @@ export function MonthGraph({
         </ColorsContainer>
         <SubtitleText>More</SubtitleText>
       </SubtitleContainer>
+
+      <ConsumptionCards
+        typeOfConsumption={typeOfConsumption}
+        consumptionUnit={consumptionUnit}
+        selectedGraph="Week"
+        totalConsumption={totalMonthConsumption}
+        percentConsumption={percentConsumption}
+      />
     </Container>
   );
 }

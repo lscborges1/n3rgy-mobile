@@ -3,7 +3,8 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   flex: 1;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  padding-top: 20px;
 `;
 
 export const HeatMapContainer = styled.View`
@@ -13,7 +14,7 @@ export const HeatMapContainer = styled.View`
 `;
 
 export const SubtitleContainer = styled.View`
-  margin-top: -50px;
+  margin-top: -70px;
   display: flex;
   flex-direction: row;
   align-items: center;
