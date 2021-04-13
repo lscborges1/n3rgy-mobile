@@ -76,7 +76,7 @@ export function Electricity(): JSX.Element {
           graphSelection={handleGraphSelection}
           selectedGraph={selectedGraph}
         />
-        <DaySelector />
+        <DaySelector selectedGraph={selectedGraph} />
         {isCacheLoading && (
           <Loading size="large" color="#ebab21" animating={isCacheLoading} />
         )}

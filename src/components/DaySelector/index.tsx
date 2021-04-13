@@ -5,8 +5,39 @@ import { format } from 'date-fns';
 import { Container, DateText } from './styles';
 import { useSelectedDay } from '../../hooks/useSelectedDay';
 
-export function DaySelector(): JSX.Element {
-  const { selectedDay, handleLastDay, handleNextDay } = useSelectedDay();
+interface DaySelectorProps {
+  selectedGraph: string;
+}
+
+export function DaySelector({ selectedGraph }: DaySelectorProps): JSX.Element {
+  const {
+    selectedDay,
+    handleLastDay,
+    handleNextDay,
+    handleNextWeek,
+    handleLastWeek,
+  } = useSelectedDay();
+
+  let handleFowardDateNavigation;
+  let handleBackDateNavigation;
+
+  switch (selectedGraph) {
+    case 'Day':
+      handleFowardDateNavigation = handleNextDay;
+      handleBackDateNavigation = handleLastDay;
+      break;
+    case 'Week':
+      handleFowardDateNavigation = handleNextWeek;
+      handleBackDateNavigation = handleLastWeek;
+      break;
+    case 'Month':
+      // handleFowardDateNavigation = handleNextMonth;
+      // handleBackDateNavigation = handleLastMonth;
+      break;
+
+    default:
+      break;
+  }
 
   return (
     <Container>
@@ -15,7 +46,7 @@ export function DaySelector(): JSX.Element {
           name="chevron-back-outline"
           size={50}
           color="#ebab21"
-          onPress={handleLastDay}
+          onPress={handleBackDateNavigation}
         />
       </TouchableOpacity>
       <DateText> {format(selectedDay, 'dd/MM/yyyy')} </DateText>
@@ -24,7 +55,7 @@ export function DaySelector(): JSX.Element {
           name="chevron-forward-outline"
           size={50}
           color="#ebab21"
-          onPress={handleNextDay}
+          onPress={handleFowardDateNavigation}
         />
       </TouchableOpacity>
     </Container>
