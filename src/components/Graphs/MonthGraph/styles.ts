@@ -7,15 +7,21 @@ export const Container = styled.View`
   padding-top: 20px;
 `;
 
+export const GraphContainer = styled.View`
+  flex: 1;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const HeatMapContainer = styled.View`
   width: 70%;
   transform: rotate(90deg) rotateY(180deg);
-  align-self: center;
 `;
 
 export const SubtitleContainer = styled.View`
-  margin-top: -70px;
   display: flex;
+  margin-top: -70px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;

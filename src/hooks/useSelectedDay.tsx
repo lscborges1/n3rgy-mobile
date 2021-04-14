@@ -6,8 +6,11 @@ import {
   subWeeks,
   addWeeks,
   startOfWeek,
+  isThisMonth,
+  startOfMonth,
+  subMonths,
 } from 'date-fns';
-import { isThisWeek } from 'date-fns/esm';
+import { addMonths, isThisWeek } from 'date-fns/esm';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 interface SelectedDayProviderProps {
@@ -19,6 +22,8 @@ interface SelectedDayContextData {
   handleLastDay: () => void;
   handleNextWeek: () => void;
   handleLastWeek: () => void;
+  handleNextMonth: () => void;
+  handleLastMonth: () => void;
 
   setDay: (day: Date) => void;
 }
@@ -63,6 +68,27 @@ export function SelectedDayProvider({
     });
   }
 
+  function handleNextMonth() {
+    if (isThisMonth(selectedDay)) {
+      return;
+    }
+    setSelectedDay(currentDay => {
+      const startOfCurrentMonth = startOfMonth(currentDay);
+      const newSelectedDay = addMonths(startOfCurrentMonth, 1);
+
+      return newSelectedDay;
+    });
+  }
+
+  function handleLastMonth() {
+    setSelectedDay(currentDay => {
+      const startOfCurrentMonth = startOfMonth(currentDay);
+      const newSelectedDay = subMonths(startOfCurrentMonth, 1);
+
+      return newSelectedDay;
+    });
+  }
+
   function setDay(day: Date) {
     setSelectedDay(day);
   }
@@ -75,6 +101,8 @@ export function SelectedDayProvider({
         handleLastDay,
         handleNextWeek,
         handleLastWeek,
+        handleNextMonth,
+        handleLastMonth,
         setDay,
       }}
     >

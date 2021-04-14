@@ -43,56 +43,56 @@ export function DayGraph({
 
   const filterDayGraphData = useCallback(
     (day: Date) => {
-      const todayConsumption = data.get(format(day, 'yyyy-MM-dd'));
+      let todayConsumption;
+      todayConsumption as consuptionData[];
+      todayConsumption = data.get(format(day, 'yyyy-MM-dd'));
 
-      if (todayConsumption) {
-        const formatedDayConsumption = todayConsumption.map(
-          (consumption: consuptionData) => {
-            return {
-              y: consumption.value,
-              x: new Date(consumption.timestamp.replace(/-/g, '/')),
-            };
-          },
-        );
+      const formatedDayConsumption = todayConsumption.map(
+        (consumption: consuptionData) => {
+          return {
+            y: consumption.value,
+            x: new Date(consumption.timestamp.replace(/-/g, '/')),
+          };
+        },
+      );
 
-        const newTotalDayConsumption: number = todayConsumption.reduce(
-          (acc, consumption: consuptionData) => {
-            return acc + consumption.value;
-          },
-          0,
-        );
+      const newTotalDayConsumption: number = todayConsumption.reduce(
+        (acc, consumption: consuptionData) => {
+          return acc + consumption.value;
+        },
+        0,
+      );
 
-        setTotalDayConsumption(newTotalDayConsumption);
-        setDayConsumption(formatedDayConsumption);
-
-        if (isToday(selectedDay)) {
-          setPercentConsumption('N/A');
-          return;
-        }
-
-        const yesterdayConsumption = data.get(
-          format(subDays(selectedDay, 1), 'yyyy-MM-dd'),
-        );
-        if (yesterdayConsumption) {
-          const newTotalYesterdayConsumption: number = yesterdayConsumption.reduce(
-            (acc, consumption: consuptionData) => {
-              return acc + consumption.value;
-            },
-            0,
-          );
-
-          const percentageChangeOnconsuption =
-            (newTotalDayConsumption / newTotalYesterdayConsumption - 1) * 100;
-          setPercentConsumption(`${percentageChangeOnconsuption.toFixed(2)} %`);
-        }
-      }
+      return {
+        consumptionData: formatedDayConsumption,
+        totalConsumption: newTotalDayConsumption,
+      };
     },
-    [data, selectedDay],
+    [data],
   );
 
   useEffect(() => {
     if (!loading) {
-      filterDayGraphData(selectedDay);
+      const {
+        consumptionData: currentDayData,
+        totalConsumption: currentTotalConsumption,
+      } = filterDayGraphData(selectedDay);
+
+      setTotalDayConsumption(currentTotalConsumption);
+      setDayConsumption(currentDayData);
+
+      if (isToday(selectedDay)) {
+        setPercentConsumption('N/A');
+        return;
+      }
+
+      const {
+        totalConsumption: yesterdayTotalConsumption,
+      } = filterDayGraphData(subDays(selectedDay, 1));
+
+      const percentageChangeOnconsuption =
+        (currentTotalConsumption / yesterdayTotalConsumption - 1) * 100;
+      setPercentConsumption(`${percentageChangeOnconsuption.toFixed(2)} %`);
     }
   }, [selectedDay, filterDayGraphData, loading]);
 

@@ -98,7 +98,11 @@ export function Electricity(): JSX.Element {
         )}
 
         {selectedGraph === 'Month' && !isCacheLoading && (
-          <MonthGraph typeOfConsumption="electricity" />
+          <MonthGraph
+            loading={isCacheLoading}
+            data={consumptionData}
+            typeOfConsumption="electricity"
+          />
         )}
       </Container>
     </>

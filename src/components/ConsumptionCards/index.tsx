@@ -1,9 +1,10 @@
 import { Ionicons } from '@expo/vector-icons';
+
 import React from 'react';
 import { Card, CardContainer, CardText, UnitText } from './styles';
 
 interface ConsumptionCardsProps {
-  typeOfConsumption: 'electricity' | 'gas';
+  typeOfConsumption: string;
   totalConsumption: string;
   consumptionUnit: string;
   percentConsumption: string;

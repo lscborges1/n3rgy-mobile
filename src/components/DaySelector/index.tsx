@@ -16,6 +16,8 @@ export function DaySelector({ selectedGraph }: DaySelectorProps): JSX.Element {
     handleNextDay,
     handleNextWeek,
     handleLastWeek,
+    handleNextMonth,
+    handleLastMonth,
   } = useSelectedDay();
 
   let handleFowardDateNavigation;
@@ -31,8 +33,8 @@ export function DaySelector({ selectedGraph }: DaySelectorProps): JSX.Element {
       handleBackDateNavigation = handleLastWeek;
       break;
     case 'Month':
-      // handleFowardDateNavigation = handleNextMonth;
-      // handleBackDateNavigation = handleLastMonth;
+      handleFowardDateNavigation = handleNextMonth;
+      handleBackDateNavigation = handleLastMonth;
       break;
 
     default:
