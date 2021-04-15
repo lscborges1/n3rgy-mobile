@@ -8,11 +8,13 @@ import { useSelectedDay } from '../../hooks/useSelectedDay';
 interface DaySelectorProps {
   selectedGraph: string;
   cacheStart: Date;
+  showDatePicker: () => void;
 }
 
 export function DaySelector({
   selectedGraph,
   cacheStart,
+  showDatePicker,
 }: DaySelectorProps): JSX.Element {
   const {
     selectedDay,
@@ -57,7 +59,10 @@ export function DaySelector({
           }}
         />
       </TouchableOpacity>
-      <DateText> {format(selectedDay, 'dd/MM/yyyy')} </DateText>
+      <TouchableOpacity onPress={showDatePicker}>
+        <DateText> {format(selectedDay, 'dd/MM/yyyy')} </DateText>
+      </TouchableOpacity>
+
       <TouchableOpacity>
         <Ionicons
           name="chevron-forward-outline"

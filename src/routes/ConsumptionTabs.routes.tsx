@@ -33,8 +33,8 @@ export function ConsumptionTabs(): JSX.Element {
           },
           iconStyle: {
             flex: 0,
-            width: 20,
-            height: 20,
+            width: 25,
+            height: 25,
           },
           labelStyle: {
             fontFamily: 'Archivo_700Bold',

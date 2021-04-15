@@ -12,12 +12,14 @@ import {
 
 interface SettingsModalProps {
   closeSettings: () => void;
+  refreshCache: () => void;
   isVisible: boolean;
 }
 
 export function SettingsModal({
   isVisible,
   closeSettings,
+  refreshCache,
 }: SettingsModalProps): JSX.Element {
   const { navigate } = useNavigation();
   const { logout } = useAuth();
@@ -32,7 +34,11 @@ export function SettingsModal({
     <Modal animationType="fade" transparent visible={isVisible}>
       <ModalContainer intensity={100} tint="dark">
         <ModalView>
-          <SettingsModalButton>
+          <SettingsModalButton
+            onPress={() => {
+              refreshCache();
+            }}
+          >
             <ButtonText>REFRESH CACHE</ButtonText>
             <Ionicons name="refresh-outline" size={25} />
           </SettingsModalButton>
