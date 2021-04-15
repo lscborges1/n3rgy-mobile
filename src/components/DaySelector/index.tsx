@@ -7,9 +7,13 @@ import { useSelectedDay } from '../../hooks/useSelectedDay';
 
 interface DaySelectorProps {
   selectedGraph: string;
+  cacheStart: Date;
 }
 
-export function DaySelector({ selectedGraph }: DaySelectorProps): JSX.Element {
+export function DaySelector({
+  selectedGraph,
+  cacheStart,
+}: DaySelectorProps): JSX.Element {
   const {
     selectedDay,
     handleLastDay,
@@ -48,7 +52,9 @@ export function DaySelector({ selectedGraph }: DaySelectorProps): JSX.Element {
           name="chevron-back-outline"
           size={50}
           color="#ebab21"
-          onPress={handleBackDateNavigation}
+          onPress={() => {
+            handleBackDateNavigation(cacheStart);
+          }}
         />
       </TouchableOpacity>
       <DateText> {format(selectedDay, 'dd/MM/yyyy')} </DateText>

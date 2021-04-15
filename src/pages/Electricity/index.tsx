@@ -1,5 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import React, { useEffect, useState } from 'react';
+import { parse } from 'date-fns';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Header } from '../../components/Header';
 import { GraphSelector } from '../../components/GraphSelector';
 import { DayGraph } from '../../components/Graphs/DayGraph';
@@ -16,39 +18,87 @@ export function Electricity(): JSX.Element {
   const [settingsModal, setSettingsModal] = useState(false);
   const [selectedGraph, setSelectedGraph] = useState('Day');
   const [consumptionData, setConsumptionData] = useState(new Map());
+  const [comsumptionCacheStart, setConsumptionCacheStart] = useState(
+    new Date(),
+  );
+  const [comsumptionCacheEnd, setConsumptionCacheEnd] = useState(new Date());
 
   useEffect(() => {
-    async function getElectricityConsumption() {
-      const { data: ElectricityConsumption } = await api.get(
-        'electricity/consumption/1',
-      );
-      const {
-        start: cacheStart,
-        end: cacheEnd,
-      } = ElectricityConsumption.availableCacheRange;
+    async function getElectricityConsumption(): Promise<void> {
+      const [
+        cachedConsumption,
+        storedCacheStart,
+        storedCacheEnd,
+      ] = await AsyncStorage.multiGet([
+        '@n3rgyMobile:electricityConsumption',
+        '@n3rgyMobile:cacheStart',
+        '@n3rgyMobile:cacheEnd',
+      ]);
 
-      let requestStartDate = cacheStart;
+      if (cachedConsumption[1] && storedCacheStart[1] && storedCacheEnd[1]) {
+        const groupedConsumption = groupBy(
+          JSON.parse(cachedConsumption[1]),
+          data => data.timestamp.slice(0, 10),
+        );
+        setConsumptionCacheStart(new Date(JSON.parse(storedCacheStart[1])));
+        setConsumptionCacheEnd(new Date(JSON.parse(storedCacheEnd[1])));
+        setConsumptionData(groupedConsumption);
+        setIsCacheLoading(false);
+      } else {
+        const { data: ElectricityConsumption } = await api.get(
+          'electricity/consumption/1',
+        );
+        const {
+          start: cacheStart,
+          end: cacheEnd,
+        } = ElectricityConsumption.availableCacheRange;
 
-      let cacheData = [];
+        const parsedCacheStart = parse(
+          String(cacheStart).slice(0, 8),
+          'yyyyMMdd',
+          new Date(),
+        );
+        const parsedCacheEnd = parse(
+          String(cacheEnd).slice(0, 8),
+          'yyyyMMdd',
+          new Date(),
+        );
 
-      while (requestStartDate !== cacheEnd) {
-        const resp = await api.get('/electricity/consumption/1', {
-          params: {
-            start: requestStartDate,
-            end: cacheEnd,
-          },
-        });
+        setConsumptionCacheStart(parsedCacheStart);
+        setConsumptionCacheEnd(parsedCacheEnd);
 
-        cacheData = cacheData.concat(resp.data.values);
-        requestStartDate = resp.data.end;
+        let requestStartDate = cacheStart;
+
+        let cacheData = [];
+
+        while (requestStartDate !== cacheEnd) {
+          const resp = await api.get('/electricity/consumption/1', {
+            params: {
+              start: requestStartDate,
+              end: cacheEnd,
+            },
+          });
+
+          cacheData = cacheData.concat(resp.data.values);
+          requestStartDate = resp.data.end;
+        }
+
+        await AsyncStorage.multiSet([
+          ['@n3rgyMobile:cacheStart', JSON.stringify(parsedCacheStart)],
+          ['@n3rgyMobile:cacheEnd', JSON.stringify(parsedCacheEnd)],
+          ['@n3rgyMobile:electricityConsumption', JSON.stringify(cacheData)],
+        ]);
+
+        const groupedConsumption = groupBy(cacheData, data =>
+          data.timestamp.slice(0, 10),
+        );
+
+        setConsumptionData(groupedConsumption);
+
+        setIsCacheLoading(false);
       }
-
-      const groupedConsumption = groupBy(cacheData, data =>
-        data.timestamp.slice(0, 10),
-      );
-      setConsumptionData(groupedConsumption);
-      setIsCacheLoading(false);
     }
+
     getElectricityConsumption();
   }, []);
 
@@ -76,13 +126,17 @@ export function Electricity(): JSX.Element {
           graphSelection={handleGraphSelection}
           selectedGraph={selectedGraph}
         />
-        <DaySelector selectedGraph={selectedGraph} />
+        <DaySelector
+          selectedGraph={selectedGraph}
+          cacheStart={comsumptionCacheStart}
+        />
         {isCacheLoading && (
           <Loading size="large" color="#ebab21" animating={isCacheLoading} />
         )}
 
         {selectedGraph === 'Day' && !isCacheLoading && (
           <DayGraph
+            cacheStart={comsumptionCacheStart}
             loading={isCacheLoading}
             data={consumptionData}
             typeOfConsumption="electricity"
@@ -91,6 +145,7 @@ export function Electricity(): JSX.Element {
 
         {selectedGraph === 'Week' && !isCacheLoading && (
           <WeekGraph
+            cacheStart={comsumptionCacheStart}
             loading={isCacheLoading}
             data={consumptionData}
             typeOfConsumption="electricity"
@@ -99,9 +154,11 @@ export function Electricity(): JSX.Element {
 
         {selectedGraph === 'Month' && !isCacheLoading && (
           <MonthGraph
+            cacheStart={comsumptionCacheStart}
             loading={isCacheLoading}
             data={consumptionData}
             typeOfConsumption="electricity"
+            selectGraph={handleGraphSelection}
           />
         )}
       </Container>

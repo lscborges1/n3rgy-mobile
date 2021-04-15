@@ -37,6 +37,7 @@ export function Landing(): JSX.Element {
       setLoginLoading(true);
       api.defaults.headers.common.Authorization = IHDMACInput;
       await api.get('');
+      await login(IHDMACInput);
     } catch (e) {
       setLoginLoading(false);
       Alert.alert(
@@ -46,7 +47,6 @@ export function Landing(): JSX.Element {
       return;
     }
     setLoginLoading(false);
-    login(IHDMACInput);
     navigate('ConsumptionTabs');
   }
 

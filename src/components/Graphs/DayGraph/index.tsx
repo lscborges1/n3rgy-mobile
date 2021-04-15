@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SlideAreaChart } from '@connectedcars/react-native-slide-charts';
-import { format, isToday, subDays } from 'date-fns';
+import { format, isToday, subDays, isSameDay } from 'date-fns';
 import { Container, GraphContainer } from './styles';
 import { useSelectedDay } from '../../../hooks/useSelectedDay';
 import { ConsumptionCards } from '../../ConsumptionCards';
@@ -10,6 +10,7 @@ interface DayGraphProps {
   typeOfConsumption: 'electricity' | 'gas';
   loading: boolean;
   data: Map<string, [{ timestamp: string; value: number }]>;
+  cacheStart: Date;
 }
 interface consuptionData {
   timestamp: string;
@@ -20,6 +21,7 @@ export function DayGraph({
   typeOfConsumption,
   loading,
   data,
+  cacheStart,
 }: DayGraphProps): JSX.Element {
   let consumptionUnit = '';
   switch (typeOfConsumption) {
@@ -38,6 +40,7 @@ export function DayGraph({
   ]);
   const [totalDayConsumption, setTotalDayConsumption] = useState(0);
   const [percentConsumption, setPercentConsumption] = useState('');
+  const [graphLastHour, setGraphLastHour] = useState('');
 
   const { selectedDay } = useSelectedDay();
 
@@ -47,25 +50,37 @@ export function DayGraph({
       todayConsumption as consuptionData[];
       todayConsumption = data.get(format(day, 'yyyy-MM-dd'));
 
-      const formatedDayConsumption = todayConsumption.map(
-        (consumption: consuptionData) => {
-          return {
-            y: consumption.value,
-            x: new Date(consumption.timestamp.replace(/-/g, '/')),
-          };
-        },
-      );
+      if (todayConsumption) {
+        const formatedDayConsumption = todayConsumption.map(
+          (consumption: consuptionData) => {
+            return {
+              y: consumption.value,
+              x: new Date(consumption.timestamp.replace(/-/g, '/')),
+            };
+          },
+        );
 
-      const newTotalDayConsumption: number = todayConsumption.reduce(
-        (acc, consumption: consuptionData) => {
-          return acc + consumption.value;
-        },
-        0,
-      );
+        const newTotalDayConsumption: number = todayConsumption.reduce(
+          (acc, consumption: consuptionData) => {
+            return acc + consumption.value;
+          },
+          0,
+        );
 
+        setGraphLastHour(
+          todayConsumption[todayConsumption.length - 1].timestamp
+            .split(' ')
+            .pop(),
+        );
+
+        return {
+          consumptionData: formatedDayConsumption,
+          totalConsumption: newTotalDayConsumption,
+        };
+      }
       return {
-        consumptionData: formatedDayConsumption,
-        totalConsumption: newTotalDayConsumption,
+        consumptionData: [],
+        totalConsumption: 0,
       };
     },
     [data],
@@ -80,8 +95,7 @@ export function DayGraph({
 
       setTotalDayConsumption(currentTotalConsumption);
       setDayConsumption(currentDayData);
-
-      if (isToday(selectedDay)) {
+      if (isToday(selectedDay) || isSameDay(selectedDay, cacheStart)) {
         setPercentConsumption('N/A');
         return;
       }
@@ -94,7 +108,7 @@ export function DayGraph({
         (currentTotalConsumption / yesterdayTotalConsumption - 1) * 100;
       setPercentConsumption(`${percentageChangeOnconsuption.toFixed(2)} %`);
     }
-  }, [selectedDay, filterDayGraphData, loading]);
+  }, [selectedDay, filterDayGraphData, loading, cacheStart]);
 
   return (
     <Container>
@@ -113,7 +127,10 @@ export function DayGraph({
             markFirstLine: false,
           }}
           xAxisProps={{
-            axisMarkerLabels: ['0', '6', '12', '18', '24'],
+            axisMarkerLabels:
+              graphLastHour === '23:30'
+                ? ['0', '6', '12', '18', '24']
+                : ['0', graphLastHour],
           }}
           toolTipProps={{
             toolTipTextRenderers: [

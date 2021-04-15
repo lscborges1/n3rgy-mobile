@@ -26,7 +26,6 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   useEffect(() => {
     async function loadStorageData(): Promise<void> {
       const cachedIHDMAC = await AsyncStorage.getItem('@n3rgyMobile:IHDMAC');
-
       if (cachedIHDMAC) {
         api.defaults.headers.common.Authorization = JSON.parse(cachedIHDMAC);
         setIDHMAC(JSON.parse(cachedIHDMAC));
@@ -37,13 +36,15 @@ export function AuthProvider({ children }: AuthProviderProps): JSX.Element {
   }, []);
 
   async function login(inputIHDMAC: string): Promise<void> {
+    await AsyncStorage.setItem(
+      '@n3rgyMobile:IHDMAC',
+      JSON.stringify(inputIHDMAC),
+    );
     setIDHMAC(inputIHDMAC);
-    await AsyncStorage.setItem('@n3rgyMobile:IHDMAC', JSON.stringify(IHDMAC));
   }
 
   async function logout() {
-    setIDHMAC('');
-    await AsyncStorage.removeItem('@n3rgyMobile:IHDMAC');
+    await AsyncStorage.clear();
   }
 
   return (

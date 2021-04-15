@@ -9,8 +9,10 @@ import {
   isThisMonth,
   startOfMonth,
   subMonths,
+  isAfter,
+  addMonths,
+  isThisWeek,
 } from 'date-fns';
-import { addMonths, isThisWeek } from 'date-fns/esm';
 import React, { createContext, ReactNode, useContext, useState } from 'react';
 
 interface SelectedDayProviderProps {
@@ -19,11 +21,11 @@ interface SelectedDayProviderProps {
 interface SelectedDayContextData {
   selectedDay: Date;
   handleNextDay: () => void;
-  handleLastDay: () => void;
+  handleLastDay: (cacheStart: Date) => void;
   handleNextWeek: () => void;
-  handleLastWeek: () => void;
+  handleLastWeek: (cacheStart: Date) => void;
   handleNextMonth: () => void;
-  handleLastMonth: () => void;
+  handleLastMonth: (cacheStart: Date) => void;
 
   setDay: (day: Date) => void;
 }
@@ -42,7 +44,13 @@ export function SelectedDayProvider({
     setSelectedDay(currentDay => addDays(currentDay, 1));
   }
 
-  function handleLastDay() {
+  function handleLastDay(cacheStart: Date) {
+    const yesterday = subDays(selectedDay, 1);
+
+    if (isAfter(cacheStart, yesterday)) {
+      return;
+    }
+
     setSelectedDay(currentDay => subDays(currentDay, 1));
   }
 
@@ -59,7 +67,13 @@ export function SelectedDayProvider({
     });
   }
 
-  function handleLastWeek() {
+  function handleLastWeek(cacheStart: Date) {
+    const lastWeek = subWeeks(startOfWeek(selectedDay, { weekStartsOn: 1 }), 1);
+
+    if (isAfter(cacheStart, lastWeek)) {
+      return;
+    }
+
     setSelectedDay(currentDay => {
       const startOfCurrentWeek = startOfWeek(currentDay, { weekStartsOn: 1 });
       const newSelectedDay = subWeeks(startOfCurrentWeek, 1);
@@ -80,7 +94,13 @@ export function SelectedDayProvider({
     });
   }
 
-  function handleLastMonth() {
+  function handleLastMonth(cacheStart: Date) {
+    const lastMonth = subMonths(startOfMonth(selectedDay), 1);
+
+    if (isAfter(cacheStart, lastMonth)) {
+      return;
+    }
+
     setSelectedDay(currentDay => {
       const startOfCurrentMonth = startOfMonth(currentDay);
       const newSelectedDay = subMonths(startOfCurrentMonth, 1);

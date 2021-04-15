@@ -1,9 +1,21 @@
 import styled from 'styled-components/native';
+import { BlurView } from 'expo-blur';
 import { Platform } from 'react-native';
+
+export const ModalContainer = styled(BlurView)`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+`;
 
 export const ModalView = styled.View`
   flex: 1;
   flex-direction: column;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+
   height: 35%;
   width: 100%;
   background-color: #fff;

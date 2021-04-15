@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SlideBarChart } from '@connectedcars/react-native-slide-charts';
-import { format, startOfWeek, addDays, isThisWeek } from 'date-fns';
+import { format, startOfWeek, addDays, isThisWeek, isAfter } from 'date-fns';
 import { subWeeks } from 'date-fns/esm';
 import { Container, GraphContainer } from './styles';
 import { ConsumptionCards } from '../../ConsumptionCards';
@@ -11,6 +11,7 @@ interface WeekGraphProps {
   typeOfConsumption: 'electricity' | 'gas';
   loading: boolean;
   data: Map<string, [{ timestamp: string; value: number }]>;
+  cacheStart: Date;
 }
 
 interface BarChartData {
@@ -22,6 +23,7 @@ export function WeekGraph({
   typeOfConsumption,
   loading,
   data,
+  cacheStart,
 }: WeekGraphProps): JSX.Element {
   let consumptionUnit = '';
   switch (typeOfConsumption) {
@@ -87,7 +89,11 @@ export function WeekGraph({
       setWeekConsumption(currentWeekData);
       setTotalWeekConsumption(currentWeekTotalConsumption);
 
-      if (isThisWeek(selectedDay)) {
+      const startOfLastWeek = startOfWeek(subWeeks(selectedDay, 1), {
+        weekStartsOn: 1,
+      });
+
+      if (isThisWeek(selectedDay) || isAfter(cacheStart, startOfLastWeek)) {
         setPercentConsumption('N/A');
         return;
       }
@@ -100,7 +106,7 @@ export function WeekGraph({
         (currentWeekTotalConsumption / lastWeekTotalConsumption - 1) * 100;
       setPercentConsumption(`${percentageChangeOnconsuption.toFixed(2)}%`);
     }
-  }, [selectedDay, loading, filterWeekGraphData]);
+  }, [selectedDay, filterWeekGraphData, loading, cacheStart]);
 
   return (
     <Container>
