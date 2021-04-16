@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 interface HeatMapBlockProps {
@@ -23,6 +23,10 @@ interface HeatMapProps {
   onBlockPress: ({ index, value }) => void;
 }
 
+interface HeatMapColumnProps {
+  children: ReactNode;
+}
+
 function HeatMapBlock({
   size,
   value,
@@ -31,7 +35,7 @@ function HeatMapBlock({
   colorsPercentage,
   colors,
   onBlockPress,
-}: HeatMapBlockProps): JSX.Element {
+}: HeatMapBlockProps): JSX.Element | null {
   const valuePercentage = (value / maximumValue) * 100;
   let color;
 
@@ -39,6 +43,8 @@ function HeatMapBlock({
     if (valuePercentage >= colorsPercentage[i]) color = colors[i];
     else break;
   }
+
+  if (!color) return null;
 
   return (
     <TouchableOpacity
@@ -52,17 +58,15 @@ function HeatMapBlock({
         alignItems: 'center',
         justifyContent: 'center',
       }}
-    >
-      <Text style={{ fontSize: 20, color: '#fff' }}>{index}</Text>
-    </TouchableOpacity>
+    />
   );
 }
 
-function HeatMapColumn(children: ReactNode) {
-  return <View>{children}</View>;
+function HeatMapColumn({ children }: HeatMapColumnProps) {
+  return <View style={{ flexDirection: 'row' }}>{children}</View>;
 }
 
-export function NewHeatMap({
+export function HeatMap({
   numberOfLines,
   values,
   indexStart,
@@ -109,5 +113,7 @@ export function NewHeatMap({
     return columns;
   };
 
-  return <ScrollView horizontal>{generateColumns()}</ScrollView>;
+  const columns = generateColumns();
+
+  return <ScrollView>{columns.map(current => current)}</ScrollView>;
 }

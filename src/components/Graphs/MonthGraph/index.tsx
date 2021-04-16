@@ -6,11 +6,12 @@ import {
   startOfMonth,
   isThisMonth,
   isAfter,
+  getMonth,
 } from 'date-fns';
 import { subMonths } from 'date-fns/esm';
 import { useSelectedDay } from '../../../hooks/useSelectedDay';
 import { ConsumptionCards } from '../../ConsumptionCards';
-import HeatMap from '../../HeatMap/index.js';
+import { HeatMap } from '../../HeatMap';
 
 import {
   Container,
@@ -19,8 +20,10 @@ import {
   ColorsContainer,
   SubtitleContainer,
   SubtitleText,
+  DatesContainer,
+  DatesText,
+  GraphContainer,
 } from './styles';
-import { NewHeatMap } from '../../NewHeatMap';
 
 interface MonthGraphProps {
   typeOfConsumption: 'electricity' | 'gas';
@@ -98,6 +101,14 @@ export function MonthGraph({
     [selectGraph, setDay, selectedDay],
   );
 
+  function getSelectedMonth(day: Date) {
+    const month = getMonth(day) + 1;
+    if (month < 10) {
+      return `0${month}`;
+    }
+    return month;
+  }
+
   useEffect(() => {
     if (!loading) {
       const {
@@ -126,30 +137,41 @@ export function MonthGraph({
 
   return (
     <Container>
-      <HeatMapContainer>
-        <NewHeatMap
-          indexStart={0}
-          colors={['#dfe5ec', '#90a5bb', '#617e9e', '#3a4c5f', '#212b36']}
-          numberOfLines={7}
-          maximumValue={Math.max(...monthConsumption)}
-          blocksSize={34}
-          colorsPercentage={[0, 0.000001, 41, 60, 80]}
-          values={monthConsumption}
-          onBlockPress={handleOnBlockPress}
-        />
-      </HeatMapContainer>
+      <GraphContainer>
+        <HeatMapContainer>
+          <DatesContainer>
+            <DatesText>{`01/${getSelectedMonth(selectedDay)}`}</DatesText>
+            <DatesText>{`08/${getSelectedMonth(selectedDay)}`}</DatesText>
+            <DatesText>{`15/${getSelectedMonth(selectedDay)}`}</DatesText>
+            <DatesText>{`22/${getSelectedMonth(selectedDay)}`}</DatesText>
+            {getDaysInMonth(selectedDay) > 28 && (
+              <DatesText>{`29/${getSelectedMonth(selectedDay)}`}</DatesText>
+            )}
+          </DatesContainer>
+          <HeatMap
+            indexStart={0}
+            colors={['#dfe5ec', '#90a5bb', '#617e9e', '#3a4c5f', '#212b36']}
+            numberOfLines={7}
+            maximumValue={Math.max(...monthConsumption)}
+            blocksSize={34}
+            colorsPercentage={[0, 0.000001, 41, 60, 80]}
+            values={monthConsumption}
+            onBlockPress={handleOnBlockPress}
+          />
+        </HeatMapContainer>
 
-      <SubtitleContainer>
-        <SubtitleText>Less</SubtitleText>
-        <ColorsContainer>
-          <ColorBlock color="#dfe5ec" />
-          <ColorBlock color="#90a5bb" />
-          <ColorBlock color="#617e9e" />
-          <ColorBlock color="#3a4c5f" />
-          <ColorBlock color="#212b36" />
-        </ColorsContainer>
-        <SubtitleText>More</SubtitleText>
-      </SubtitleContainer>
+        <SubtitleContainer>
+          <SubtitleText>Less</SubtitleText>
+          <ColorsContainer>
+            <ColorBlock color="#dfe5ec" />
+            <ColorBlock color="#90a5bb" />
+            <ColorBlock color="#617e9e" />
+            <ColorBlock color="#3a4c5f" />
+            <ColorBlock color="#212b36" />
+          </ColorsContainer>
+          <SubtitleText>More</SubtitleText>
+        </SubtitleContainer>
+      </GraphContainer>
 
       <ConsumptionCards
         typeOfConsumption={typeOfConsumption}

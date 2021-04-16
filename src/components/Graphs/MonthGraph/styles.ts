@@ -15,13 +15,31 @@ export const GraphContainer = styled.View`
 `;
 
 export const HeatMapContainer = styled.View`
-  width: 70%;
-  /* transform: rotate(90deg) rotateY(180deg); */
+  flex-direction: row;
+  padding-left: 20px;
+  width: 100%;
+`;
+
+export const DatesContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 5px;
+  padding-top: 8.5px;
+  padding-bottom: 8.5px;
+`;
+
+export const DatesText = styled.Text`
+  margin: 0;
+  font-family: 'Lato-Bold';
+  font-size: 14px;
+  color: #8d8d8f;
 `;
 
 export const SubtitleContainer = styled.View`
-  display: flex;
-  margin-top: -70px;
+  flex: 1;
+  margin-top: 10px;
+  margin-bottom: 10px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -31,8 +49,8 @@ export const SubtitleText = styled.Text`
   font-family: 'Lato-Bold';
   font-size: 18px;
   color: #8d8d8f;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;
 
 export const ColorsContainer = styled.View`
@@ -47,7 +65,8 @@ interface ColorBlockProps {
 
 export const ColorBlock = styled.View<ColorBlockProps>`
   border-width: 0.5px;
-  margin-left: 3px;
+  margin-left: 3.5px;
+  margin-right: 3.5px;
   width: 15px;
   height: 15px;
   background-color: ${props => props.color};
