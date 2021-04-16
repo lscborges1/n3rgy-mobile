@@ -20,6 +20,7 @@ import {
   SubtitleContainer,
   SubtitleText,
 } from './styles';
+import { NewHeatMap } from '../../NewHeatMap';
 
 interface MonthGraphProps {
   typeOfConsumption: 'electricity' | 'gas';
@@ -126,10 +127,11 @@ export function MonthGraph({
   return (
     <Container>
       <HeatMapContainer>
-        <HeatMap
+        <NewHeatMap
+          indexStart={0}
           colors={['#dfe5ec', '#90a5bb', '#617e9e', '#3a4c5f', '#212b36']}
           numberOfLines={7}
-          maximumValue={String(Math.max(...monthConsumption))}
+          maximumValue={Math.max(...monthConsumption)}
           blocksSize={34}
           colorsPercentage={[0, 0.000001, 41, 60, 80]}
           values={monthConsumption}

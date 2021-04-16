@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, View, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 
 import styles from './styles';
@@ -29,10 +29,13 @@ const HeatMapBlock = ({
       onPress={() => onBlockPress({ value, index })}
       style={[
         styles.heatMapBlock,
-        { backgroundColor: color, width: size, height: size },
+        { backgroundColor: color, width: size, height: size ,
+          alignItems: 'center', justifyContent: 'center'},
         style,
       ]}
-    />
+    >
+    <Text style={{fontSize:20, color:"#fff"}}>{index}</Text>
+    </TouchableOpacity>
   );
 };
 

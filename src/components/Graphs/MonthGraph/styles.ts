@@ -16,7 +16,7 @@ export const GraphContainer = styled.View`
 
 export const HeatMapContainer = styled.View`
   width: 70%;
-  transform: rotate(90deg) rotateY(180deg);
+  /* transform: rotate(90deg) rotateY(180deg); */
 `;
 
 export const SubtitleContainer = styled.View`
