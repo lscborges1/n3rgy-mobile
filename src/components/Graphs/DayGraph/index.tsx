@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { SlideAreaChart } from '@connectedcars/react-native-slide-charts';
-import { format, isToday, subDays, isSameDay } from 'date-fns';
+import { format, isToday, subDays } from 'date-fns';
 import { Container, GraphContainer } from './styles';
 import { useSelectedDay } from '../../../hooks/useSelectedDay';
 import { ConsumptionCards } from '../../ConsumptionCards';
@@ -95,14 +95,15 @@ export function DayGraph({
 
       setTotalDayConsumption(currentTotalConsumption);
       setDayConsumption(currentDayData);
-      if (isToday(selectedDay) || isSameDay(selectedDay, cacheStart)) {
-        setPercentConsumption('N/A');
-        return;
-      }
 
       const {
         totalConsumption: yesterdayTotalConsumption,
       } = filterDayGraphData(subDays(selectedDay, 1));
+
+      if (isToday(selectedDay) || !yesterdayTotalConsumption) {
+        setPercentConsumption('N/A');
+        return;
+      }
 
       const percentageChangeOnconsuption =
         (currentTotalConsumption / yesterdayTotalConsumption - 1) * 100;

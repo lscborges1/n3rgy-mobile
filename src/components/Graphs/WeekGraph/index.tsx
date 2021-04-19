@@ -93,14 +93,18 @@ export function WeekGraph({
         weekStartsOn: 1,
       });
 
-      if (isThisWeek(selectedDay) || isAfter(cacheStart, startOfLastWeek)) {
-        setPercentConsumption('N/A');
-        return;
-      }
-
       const {
         totalConsumption: lastWeekTotalConsumption,
       } = filterWeekGraphData(getWeekStart(subWeeks(selectedDay, 1)));
+
+      if (
+        isThisWeek(selectedDay) ||
+        isAfter(cacheStart, startOfLastWeek) ||
+        !lastWeekTotalConsumption
+      ) {
+        setPercentConsumption('N/A');
+        return;
+      }
 
       const percentageChangeOnconsuption =
         (currentWeekTotalConsumption / lastWeekTotalConsumption - 1) * 100;

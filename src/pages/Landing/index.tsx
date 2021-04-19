@@ -30,7 +30,7 @@ export function Landing(): JSX.Element {
   const { login, IHDMAC } = useAuth();
 
   const [loginLoading, setLoginLoading] = useState(false);
-  const [IHDMACInput, setIHDMACInput] = useState('0CA2F4000025F4D4');
+  const [IHDMACInput, setIHDMACInput] = useState('');
 
   async function handleSignInButton() {
     try {

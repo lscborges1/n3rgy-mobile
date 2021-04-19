@@ -1,21 +1,23 @@
 {
-  "name": "n3rgyMobile",
-  "displayName": "n3rgyMobile",
+  "name": "n3rgy",
+  "displayName": "n3rgy",
   "expo": {
-    "name": "n3rgyMobile",
-    "icon":"./assets/images/icon.png",
-    "splash":{
+    "name": "n3rgy",
+    "icon": "./assets/images/icon.png",
+    "description":"Data visualization tool for n3rgy consummers.",
+    "splash": {
       "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#212B36"
+      "backgroundColor": "#212B36",
+      "resizeMode": "cover"
     },
-    "android":{
-      "adaptiveIcon":{
-        "foregroundImage":"./assets/images/adaptive-icon.png",
-        "backgroundColor":"#212B36"
-      }
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#212B36"
+      },
+      "package": "com.lscborges1.n3rgy"
     },
-    "slug": "n3rgyMobile",
+    "slug": "n3rgy",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"

@@ -120,14 +120,18 @@ export function MonthGraph({
 
       const startOfLastMonth = startOfMonth(subMonths(selectedDay, 1));
 
-      if (isThisMonth(selectedDay) || isAfter(cacheStart, startOfLastMonth)) {
-        setPercentConsumption('N/A');
-        return;
-      }
-
       const {
         totalConsumption: lastMonthTotalConsumption,
       } = filterMonthGraphData(startOfMonth(subMonths(selectedDay, 1)));
+
+      if (
+        isThisMonth(selectedDay) ||
+        isAfter(cacheStart, startOfLastMonth) ||
+        !lastMonthTotalConsumption
+      ) {
+        setPercentConsumption('N/A');
+        return;
+      }
 
       const percentageChangeOnconsuption =
         (currentMonthTotalConsumption / lastMonthTotalConsumption - 1) * 100;
