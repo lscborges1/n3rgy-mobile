@@ -159,19 +159,19 @@ export function MonthGraph({
             onBlockPress={handleOnBlockPress}
           />
         </HeatMapContainer>
-
-        <SubtitleContainer>
-          <SubtitleText>Less</SubtitleText>
-          <ColorsContainer>
-            <ColorBlock color="#dfe5ec" />
-            <ColorBlock color="#90a5bb" />
-            <ColorBlock color="#617e9e" />
-            <ColorBlock color="#3a4c5f" />
-            <ColorBlock color="#212b36" />
-          </ColorsContainer>
-          <SubtitleText>More</SubtitleText>
-        </SubtitleContainer>
       </GraphContainer>
+
+      <SubtitleContainer>
+        <SubtitleText>Less</SubtitleText>
+        <ColorsContainer>
+          <ColorBlock color="#dfe5ec" />
+          <ColorBlock color="#90a5bb" />
+          <ColorBlock color="#617e9e" />
+          <ColorBlock color="#3a4c5f" />
+          <ColorBlock color="#212b36" />
+        </ColorsContainer>
+        <SubtitleText>More</SubtitleText>
+      </SubtitleContainer>
 
       <ConsumptionCards
         typeOfConsumption={typeOfConsumption}

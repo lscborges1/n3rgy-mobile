@@ -3,6 +3,18 @@
   "displayName": "n3rgyMobile",
   "expo": {
     "name": "n3rgyMobile",
+    "icon":"./assets/images/icon.png",
+    "splash":{
+      "image": "./assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#212B36"
+    },
+    "android":{
+      "adaptiveIcon":{
+        "foregroundImage":"./assets/images/adaptive-icon.png",
+        "backgroundColor":"#212B36"
+      }
+    },
     "slug": "n3rgyMobile",
     "version": "1.0.0",
     "assetBundlePatterns": [

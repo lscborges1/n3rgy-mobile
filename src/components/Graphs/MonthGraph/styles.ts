@@ -4,12 +4,11 @@ export const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: space-between;
-  padding-top: 20px;
 `;
 
 export const GraphContainer = styled.View`
   flex: 1;
-  width: 100%;
+  align-self: center;
   align-items: center;
   justify-content: center;
 `;
@@ -18,6 +17,7 @@ export const HeatMapContainer = styled.View`
   flex-direction: row;
   padding-left: 20px;
   width: 100%;
+  margin-bottom: 10px;
 `;
 
 export const DatesContainer = styled.View`
@@ -37,9 +37,8 @@ export const DatesText = styled.Text`
 `;
 
 export const SubtitleContainer = styled.View`
-  flex: 1;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-bottom: 25px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
