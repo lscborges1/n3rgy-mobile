@@ -67,12 +67,6 @@ export function DayGraph({
           0,
         );
 
-        setGraphLastHour(
-          todayConsumption[todayConsumption.length - 1].timestamp
-            .split(' ')
-            .pop(),
-        );
-
         return {
           consumptionData: formatedDayConsumption,
           totalConsumption: newTotalDayConsumption,
@@ -96,6 +90,15 @@ export function DayGraph({
       setTotalDayConsumption(currentTotalConsumption);
       setDayConsumption(currentDayData);
 
+      if (currentDayData) {
+        setGraphLastHour(
+          format(
+            new Date(currentDayData[currentDayData.length - 1].x),
+            'HH:mm',
+          ),
+        );
+      }
+
       const {
         totalConsumption: yesterdayTotalConsumption,
       } = filterDayGraphData(subDays(selectedDay, 1));
@@ -109,7 +112,7 @@ export function DayGraph({
         (currentTotalConsumption / yesterdayTotalConsumption - 1) * 100;
       setPercentConsumption(`${percentageChangeOnconsuption.toFixed(2)} %`);
     }
-  }, [selectedDay, filterDayGraphData, loading, cacheStart]);
+  }, [selectedDay, filterDayGraphData, loading, cacheStart, graphLastHour]);
 
   return (
     <Container>
