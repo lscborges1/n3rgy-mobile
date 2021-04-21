@@ -4,7 +4,7 @@
   "expo": {
     "name": "n3rgy",
     "icon": "./assets/images/icon.png",
-    "description":"Data visualization tool for n3rgy consummers.",
+    "description":"Consumption visualization tool for n3rgy consumers.",
     "splash": {
       "image": "./assets/images/splash.png",
       "backgroundColor": "#212B36",
@@ -15,10 +15,11 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#212B36"
       },
-      "package": "com.lscborges1.n3rgy"
+      "package": "com.lscborges1.n3rgy",
+      "versionCode": 2
     },
     "slug": "n3rgy",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "assetBundlePatterns": [
       "**/*"
     ]

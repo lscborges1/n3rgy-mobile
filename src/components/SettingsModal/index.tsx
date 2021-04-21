@@ -39,7 +39,7 @@ export function SettingsModal({
               refreshCache();
             }}
           >
-            <ButtonText>REFRESH CACHE</ButtonText>
+            <ButtonText>REFRESH DATA</ButtonText>
             <Ionicons name="refresh-outline" size={25} />
           </SettingsModalButton>
           <SettingsModalButton
