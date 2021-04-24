@@ -10,16 +10,20 @@
       "backgroundColor": "#212B36",
       "resizeMode": "cover"
     },
+    "ios": {
+      "bundleIdentifier": "com.lscborges1.n3rgy"
+    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#212B36"
       },
       "package": "com.lscborges1.n3rgy",
-      "versionCode": 2
+      "versionCode": 3
     },
     "slug": "n3rgy",
-    "version": "1.0.1",
+    "orientation": "portrait",
+    "version": "1.0.2",
     "assetBundlePatterns": [
       "**/*"
     ]
