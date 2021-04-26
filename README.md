@@ -39,9 +39,11 @@ or
 yarn ios
 ```
 
-## Work in progress 🚧
+## Available at 
 
-Available on App Store and Play Store soon
+Play Store: https://play.google.com/store/apps/details?id=com.lscborges1.n3rgy
+
+App Store: Available soon
 
 ## Author
 
