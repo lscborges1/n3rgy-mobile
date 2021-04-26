@@ -10,7 +10,7 @@
 
 ## Preview
 
- <img src=".github/app_preview.jpg" />
+ <img src=".github/app_preview.png" />
 
 
 ## Technologies Used
@@ -33,7 +33,7 @@ yarn install
 yarn android
 ```
 
-or 
+or
 
 ```sh
 yarn ios
