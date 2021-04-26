@@ -39,11 +39,11 @@ or
 yarn ios
 ```
 
-## Available at 
+## Available at ✅
 
 Play Store: https://play.google.com/store/apps/details?id=com.lscborges1.n3rgy
 
-App Store: Available soon
+App Store: available soon 🚧
 
 ## Author
 
