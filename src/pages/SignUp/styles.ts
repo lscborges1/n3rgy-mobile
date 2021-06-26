@@ -4,14 +4,8 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   flex: 1;
-  flex-direction: column;
-`;
-
-export const LandingBackground = styled.ImageBackground`
-  flex: 1;
   padding: 0 30px ${Platform.OS === 'android' ? 60 : 40}px;
-
-  justify-content: center;
+  flex-direction: column;
 `;
 
 export const ImageContainer = styled.View`
@@ -20,21 +14,29 @@ export const ImageContainer = styled.View`
   align-items: center;
 `;
 
-export const TextInputContainer = styled.View`
+export const TextContainer = styled.View`
+  display: flex;
   width: 100%;
-  height: 60px;
-  padding: 0 16px;
-  background: #fff;
-  margin-bottom: 10px;
-  border-width: 0;
-  border-radius: 15px;
-  border-color: #232129;
+  height: 150px;
+  padding: 10px;
+  border-radius: 25px;
+  justify-content: center;
 `;
 
-export const TextInput = styled.TextInput`
-  flex: 1;
-  color: #312e38;
-  font-size: 16px;
+export const Title = styled.Text`
+  color: #fff;
+  display: flex;
+  font-size: 32px;
+  align-items: center;
+`;
+
+export const Description = styled.Text`
+  margin-top: 24px;
+  color: #fff;
+  display: flex;
+  font-size: 20px;
+  line-height: 26px;
+  align-items: center;
 `;
 
 export const LandingButton = styled(RectButton)`
@@ -51,7 +53,6 @@ export const LandingButton = styled(RectButton)`
 `;
 
 export const ButtonText = styled.Text`
-  /* font-family: 'Lato-Regular'; */
   color: #232129;
   font-size: 14px;
 `;

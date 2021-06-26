@@ -9,7 +9,7 @@ export const Container = styled.View`
 `;
 
 export const DateText = styled.Text`
-  font-family: 'Lato-Bold';
+  /* font-family: 'Lato-Bold'; */
   font-size: 20px;
   color: #8d8d8f;
 `;

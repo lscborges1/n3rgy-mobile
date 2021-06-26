@@ -1,38 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-// import { Asset } from 'expo-asset';
-import AppLoading from 'expo-app-loading';
-import * as Font from 'expo-font';
-import { Ionicons } from '@expo/vector-icons';
+// import { AppLoading } from 'expo';
+// import { Ionicons } from '@expo/vector-icons';
+// import * as Font from 'expo-font';
+// import { isLoading } from 'expo-font';
+// import { Alert } from 'react-native';
 import { AppStack } from './src/routes/AppStack.routes';
 import { AuthProvider } from './src/hooks/useAuth';
 
 export default function App(): JSX.Element {
-  const [isLoadingIcons, setIsLoadingIcons] = useState(false);
+  // const { ionicons } = Ionicons.font;
+  // const [isLoadingFonts, setIsLoadingFonts] = useState(true);
 
-  function cacheIcons() {
-    return Font.loadAsync(Ionicons.font);
-  }
+  // const loadIcons = () => Font.loadAsync({ name: 'ionicons', uri: ionicons });
+
+  // useEffect(() => {
+  //   try {
+  //     loadIcons();
+  //   } catch (e) {
+  //     Alert.alert('Loading error', 'An error occured while loading icons.');
+  //   }
+  // });
 
   return (
-    <>
-      {isLoadingIcons ? (
-        <AppLoading
-          startAsync={cacheIcons}
-          onFinish={() => setIsLoadingIcons(true)}
-          onError={console.warn}
-        />
-      ) : (
-        <AuthProvider>
-          <StatusBar translucent backgroundColor="transparent" />
-          <AppStack />
-        </AuthProvider>
-      )}
-    </>
+    // <>
+    //   {isLoading(ionicons) ? (
+    //     <AppLoading />
+    //   ) : (
+    <AuthProvider>
+      <StatusBar translucent backgroundColor="transparent" />
+      <AppStack />
+    </AuthProvider>
   );
 }
-
-<AuthProvider>
-  <StatusBar translucent backgroundColor="transparent" />
-  <AppStack />
-</AuthProvider>;

@@ -37,7 +37,7 @@ export function ConsumptionTabs(): JSX.Element {
             height: 25,
           },
           labelStyle: {
-            fontFamily: 'Archivo_700Bold',
+            // fontFamily: 'Archivo_700Bold',
             fontSize: 13,
             marginLeft: 16,
           },

@@ -40,7 +40,7 @@ export const SettingsModalButton = styled.TouchableOpacity`
 `;
 
 export const ButtonText = styled.Text`
-  font-family: 'Lato-Medium';
+  /* font-family: 'Lato-Medium'; */
   color: #232129;
   font-size: 15px;
 `;

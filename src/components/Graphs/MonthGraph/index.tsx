@@ -30,12 +30,6 @@ interface MonthGraphProps {
   loading: boolean;
   data: Map<string, [{ timestamp: string; value: number }]>;
   cacheStart: Date;
-  selectGraph: (graph: string) => void;
-}
-
-interface BlockProps {
-  index: number;
-  value: number;
 }
 
 export function MonthGraph({
@@ -43,7 +37,6 @@ export function MonthGraph({
   loading,
   data,
   cacheStart,
-  selectGraph,
 }: MonthGraphProps): JSX.Element {
   let consumptionUnit = '';
   switch (typeOfConsumption) {
@@ -59,7 +52,7 @@ export function MonthGraph({
   const [monthConsumption, setMonthConsumption] = useState<number[]>([]);
   const [totalMonthConsumption, setTotalMonthConsumption] = useState('');
   const [percentConsumption, setPercentConsumption] = useState('');
-  const { selectedDay, setDay } = useSelectedDay();
+  const { selectedDay } = useSelectedDay();
 
   const filterMonthGraphData = useCallback(
     (day: Date) => {
@@ -88,17 +81,6 @@ export function MonthGraph({
       };
     },
     [data],
-  );
-
-  const handleOnBlockPress = useCallback(
-    (block: BlockProps) => {
-      if (block.value === 0) {
-        return;
-      }
-      setDay(addDays(startOfMonth(selectedDay), block.index));
-      selectGraph('Day');
-    },
-    [selectGraph, setDay, selectedDay],
   );
 
   function getSelectedMonth(day: Date) {
@@ -160,7 +142,6 @@ export function MonthGraph({
             blocksSize={34}
             colorsPercentage={[0, 0.000001, 41, 60, 80]}
             values={monthConsumption}
-            onBlockPress={handleOnBlockPress}
           />
         </HeatMapContainer>
       </GraphContainer>

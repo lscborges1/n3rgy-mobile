@@ -16,6 +16,6 @@ export const ButtonContainer = styled.View`
 
 export const GraphSelectorText = styled.Text`
   font-size: 20px;
-  font-family: 'Lato-Bold';
+  /* font-family: 'Lato-Bold'; */
   color: #757575;
 `;

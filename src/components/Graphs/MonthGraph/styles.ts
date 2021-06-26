@@ -31,7 +31,7 @@ export const DatesContainer = styled.View`
 
 export const DatesText = styled.Text`
   margin: 0;
-  font-family: 'Lato-Bold';
+  /* font-family: 'Lato-Bold'; */
   font-size: 14px;
   color: #8d8d8f;
 `;
@@ -45,7 +45,7 @@ export const SubtitleContainer = styled.View`
 `;
 
 export const SubtitleText = styled.Text`
-  font-family: 'Lato-Bold';
+  /* font-family: 'Lato-Bold'; */
   font-size: 18px;
   color: #8d8d8f;
   margin-left: 10px;

@@ -227,7 +227,6 @@ export function Gas(): JSX.Element {
             loading={isCacheLoading}
             data={consumptionData}
             typeOfConsumption="gas"
-            selectGraph={handleGraphSelection}
           />
         )}
       </Container>

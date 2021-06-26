@@ -11,7 +11,8 @@
       "resizeMode": "cover"
     },
     "ios": {
-      "bundleIdentifier": "com.lscborges1.n3rgy"
+      "bundleIdentifier": "com.lscborges1.n3rgy",
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
@@ -19,11 +20,11 @@
         "backgroundColor": "#212B36"
       },
       "package": "com.lscborges1.n3rgy",
-      "versionCode": 3
+      "versionCode": 6
     },
     "slug": "n3rgy",
     "orientation": "portrait",
-    "version": "1.0.2",
+    "version": "1.0.8",
     "assetBundlePatterns": [
       "**/*"
     ]

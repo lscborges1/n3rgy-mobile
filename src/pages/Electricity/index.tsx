@@ -216,7 +216,6 @@ export function Electricity(): JSX.Element {
             loading={isCacheLoading}
             data={consumptionData}
             typeOfConsumption="electricity"
-            selectGraph={handleGraphSelection}
           />
         )}
       </Container>

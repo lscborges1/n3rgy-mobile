@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 interface HeatMapBlockProps {
@@ -9,7 +9,7 @@ interface HeatMapBlockProps {
   maximumValue: number;
   colorsPercentage: number[];
   colors: string[];
-  onBlockPress: ({ value, index }) => void;
+  onBlockPress?: ({ value, index }) => void;
 }
 
 interface HeatMapProps {
@@ -20,7 +20,7 @@ interface HeatMapProps {
   colorsPercentage: number[];
   maximumValue: number;
   blocksSize: number;
-  onBlockPress: ({ index, value }) => void;
+  onBlockPress?: ({ index, value }) => void;
 }
 
 interface HeatMapColumnProps {
@@ -47,8 +47,7 @@ function HeatMapBlock({
   if (!color) return null;
 
   return (
-    <TouchableOpacity
-      onPress={() => onBlockPress({ value, index })}
+    <View
       style={{
         borderRadius: 4,
         margin: 2,

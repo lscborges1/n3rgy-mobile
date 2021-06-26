@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  Modal,
-  ActivityIndicator,
-  View,
-} from 'react-native';
+import { Alert, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+// import * as WebBrowser from 'expo-web-browser';
+// import { Text } from 'react-native-svg';
 
 import {
   Container,
@@ -29,25 +23,31 @@ export function Landing(): JSX.Element {
   const { navigate } = useNavigation();
   const { login, IHDMAC } = useAuth();
 
-  const [loginLoading, setLoginLoading] = useState(false);
   const [IHDMACInput, setIHDMACInput] = useState('');
+  // const [result, setResult] = useState<WebBrowser.WebBrowserResult>();
 
   async function handleSignInButton() {
     try {
-      setLoginLoading(true);
-      api.defaults.headers.common.Authorization = IHDMACInput;
+      api.defaults.headers.common.Authorization = IHDMACInput.toUpperCase();
       await api.get('');
-      await login(IHDMACInput);
+      const upperCasedInput = IHDMACInput.toUpperCase();
+      await login(upperCasedInput);
+      navigate('ConsumptionTabs');
+      return;
     } catch (e) {
-      setLoginLoading(false);
       Alert.alert(
         'Sign in Error',
         'An error occured while signing in, check your credentials.',
       );
-      return;
     }
-    setLoginLoading(false);
-    navigate('ConsumptionTabs');
+  }
+
+  function handleSignUpButton() {
+    // const signInResult = await WebBrowser.openBrowserAsync(
+    //   'https://data.n3rgy.com/consumer/sign-up',
+    // );
+    // setResult(signInResult);
+    navigate('SignUp');
   }
 
   useEffect(() => {
@@ -68,17 +68,6 @@ export function Landing(): JSX.Element {
             <Image source={logoImg} />
           </ImageContainer>
 
-          <Modal transparent visible={loginLoading}>
-            <View style={{ flex: 1 }}>
-              <ActivityIndicator
-                size="large"
-                color="#ebab21"
-                animating={loginLoading}
-                style={{ flex: 1 }}
-              />
-            </View>
-          </Modal>
-
           <TextInputContainer>
             <TextInput
               value={IHDMACInput}
@@ -93,11 +82,12 @@ export function Landing(): JSX.Element {
             <Ionicons name="log-in-outline" size={25} />
           </LandingButton>
 
-          <LandingButton>
+          <LandingButton onPress={() => handleSignUpButton()}>
             <ButtonText>SIGN UP</ButtonText>
             <Ionicons name="globe-outline" size={25} />
           </LandingButton>
         </LandingBackground>
+        {/* <Text>{result && JSON.stringify(result)}</Text> */}
       </KeyboardAvoidingView>
     </Container>
   );
